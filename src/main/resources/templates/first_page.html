@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>All Tasks</title>
+</head>
+
+<body>
+<table border="1">
+    <thead>
+    <th>
+        <a th:href="@{'/main/' + ${currentPage} + '?sortField=id&sortDirection=' + ${reverseSortDir}}">ID</a>
+    </th>
+    <th>
+        <a th:href="@{'/main/' + ${currentPage} + '?sortField=description&sortDirection=' + ${reverseSortDir}}">Description</a>
+    </th>
+    <th>
+        <a th:href="@{'/main/' + ${currentPage} + '?sortField=status&sortDirection=' + ${reverseSortDir}}">Status</a>
+    </th>
+    </thead>
+
+    <tbody>
+    <tr th:each="task : ${listTasks}">
+        <td th:text="${task.getId()}"></td>
+        <td th:text="${task.getDescription()}"></td>
+        <td th:text="${task.getStatus()}"></td>
+        <td>
+            <form th:action="@{/deleteTask/{id}(id=${task.getId()})}"  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <a th:if="${currentPage != i}" th:href="@{'/main/' + ${i} + '?sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}">[[${i}]] </a>
+        <a th:unless="${currentPage != i}">[[${i}]]</a>
+    </span>
+</div>
+<div>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/main/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDirection=' + ${sortDirection}}">Last</a>
+    <a th:unless="${currentPage < totalPages}">Last</a>
+</div>
+
+<br>
+
+<button id="add-task-button">Add new task</button>
+<form id="add-task-form" action="#" th:action="@{/createTask}" th:object="${task}" method="post" style="display:none">
+    <input type="text" th:field="*{description}" placeholder="Task Description"/>
+    <select th:field="*{status}">
+        <option th:each="status : ${statuses}"
+                th:value="${status}"
+                th:text="${status}"></option>
+    </select>
+    <button>Create Task</button>
+</form>
+
+<button id="update-task-button">Update task</button>
+<form id="update-task-form" action="#" th:action="@{/updateTask}" th:object="${taskForUpdate}" method="post" style="display:none">
+    <input type="text" th:field="*{id}" placeholder="Task Id"/>
+    <input type="text" th:field="*{description}" placeholder="Task Description"/>
+    <select th:field="*{status}">
+        <option th:each="status : ${statuses}"
+                th:value="${status}"
+                th:text="${status}"></option>
+    </select>
+    <button>Update Task</button>
+</form>
+
+<script>
+    const addTaskButton = document.getElementById("add-task-button");
+    const addTaskForm = document.getElementById("add-task-form");
+
+    addTaskButton.addEventListener("click", function () {
+        addTaskForm.style.display = "block";
+    });
+</script>
+<script>
+    const updateTaskButton = document.getElementById("update-task-button");
+    const updateTaskForm = document.getElementById("update-task-form");
+
+    updateTaskButton.addEventListener("click", function () {
+        updateTaskForm.style.display = "block";
+    });
+</script>
+
+</body>
+
+</html>

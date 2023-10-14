@@ -2,10 +2,7 @@ package com.project.model;
 
 import com.project.helpers.StatusEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "task")
@@ -23,6 +20,4 @@ public class Task {
 
    @Enumerated(EnumType.ORDINAL)
     private StatusEnum status;
-
-
 }

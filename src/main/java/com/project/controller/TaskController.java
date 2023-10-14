@@ -9,10 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-//import static jdk.internal.org.jline.reader.impl.LineReaderImpl.CompletionType.List;
 
 @Controller
 public class TaskController {
@@ -43,7 +41,7 @@ public class TaskController {
     }
 
     @PostMapping("/updateTask")
-    public String updateTask(@ModelAttribute("taskForUpdate") Task task){
+    public String updateTask(@ModelAttribute("task") Task task){
         taskService.save(task);
         return "redirect:/";
     }

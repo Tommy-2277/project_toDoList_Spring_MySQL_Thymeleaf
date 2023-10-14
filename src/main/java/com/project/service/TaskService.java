@@ -34,9 +34,13 @@ public class TaskService {
 
     //Read
     @Transactional
-    public Optional<Task> findTaskById(Integer id){
+    public Task getTaskById(Integer id){
         Optional<Task> taskById = taskRepository.findById(id);
-        return taskById;
+        if(taskById.isPresent()){
+            return taskById.get();
+        }
+
+        throw new RuntimeException("Task not found with id : " + id);
     }
     @Transactional
     public List<Task> getAllTasks() {
